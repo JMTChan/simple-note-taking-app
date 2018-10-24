@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
         dbHelper = new DbHelper(this);
         db = dbHelper.getWritableDatabase();
+
     }
 
     @Override

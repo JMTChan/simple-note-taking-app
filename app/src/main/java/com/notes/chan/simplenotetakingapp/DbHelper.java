@@ -1,9 +1,11 @@
 package com.notes.chan.simplenotetakingapp;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import java.util.Calendar;
 
 public class DbHelper extends SQLiteOpenHelper {
 
@@ -38,5 +40,41 @@ public class DbHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
 
+    }
+
+    public long insertNote(SQLiteDatabase db, String title, String body){
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH) + 1;
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        ContentValues cv = new ContentValues();
+        cv.put(C_TITLE, title);
+        cv.put(C_BODY, body);
+        cv.put(C_CREATEDAT, year + "-" + month + "-" + day);
+        cv.put(C_UPDATEDAT, year + "-" + month + "-" + day);
+
+        long id = db.insert(TABLE_NOTES, null, cv);
+        return id;
+    }
+
+    public boolean updateNote(SQLiteDatabase db, int id, String title, String body){
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH) + 1;
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        ContentValues cv = new ContentValues();
+        cv.put(C_TITLE, title);
+        cv.put(C_BODY, body);
+        cv.put(C_UPDATEDAT, year + "-" + month + "-" + day);
+
+        int numberOfRowsAffected = db.update(TABLE_NOTES, cv, ID+"="+id, null);
+        return numberOfRowsAffected > 0;
+    }
+
+    public boolean deleteNote(SQLiteDatabase db, int id){
+        int numberOfRowsDeleted = db.delete(TABLE_NOTES, ID + "=" + id, null);
+        return numberOfRowsDeleted > 0;
     }
 }
