@@ -2,9 +2,12 @@ package com.notes.chan.simplenotetakingapp;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class DbHelper extends SQLiteOpenHelper {
@@ -77,4 +80,25 @@ public class DbHelper extends SQLiteOpenHelper {
         int numberOfRowsDeleted = db.delete(TABLE_NOTES, ID + "=" + id, null);
         return numberOfRowsDeleted > 0;
     }
+
+    public ArrayList<Note> getAllNotes(SQLiteDatabase db)
+    {
+        ArrayList<Note> notes = new ArrayList<>();
+        Cursor cursor = db.query(TABLE_NOTES, null, null, null,null,null,null,null);
+        while(cursor.moveToNext())
+        {
+            int id = cursor.getInt(cursor.getColumnIndex(ID));
+            String title = cursor.getString(cursor.getColumnIndex(C_TITLE));
+            String body = cursor.getString(cursor.getColumnIndex(C_BODY));
+            String createdat = cursor.getString(cursor.getColumnIndex(C_CREATEDAT));
+            String updatedat = cursor.getString(cursor.getColumnIndex(C_UPDATEDAT));
+
+            Note note = new Note(id, title, body, createdat, updatedat);
+
+            notes.add(note);
+        }
+        return notes;
+    }
+
+
 }

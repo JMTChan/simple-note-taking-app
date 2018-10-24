@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     private DbHelper dbHelper = null;
@@ -19,6 +21,8 @@ public class MainActivity extends AppCompatActivity {
 
         dbHelper = new DbHelper(this);
         db = dbHelper.getWritableDatabase();
+
+        ArrayList<Note> notes = dbHelper.getAllNotes(db);
 
     }
 

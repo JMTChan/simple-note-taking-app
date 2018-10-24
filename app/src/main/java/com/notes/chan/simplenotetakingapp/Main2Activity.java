@@ -44,7 +44,9 @@ public class Main2Activity extends AppCompatActivity {
 
         if(id == R.id.save){
             long id1 = dbHelper.insertNote(db, editText.getText().toString(),editText1.getText().toString());
+
             Toast.makeText(this, "Note has been saved!", Toast.LENGTH_SHORT).show();
+
             this.finish();
         }
 
