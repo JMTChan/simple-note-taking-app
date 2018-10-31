@@ -16,11 +16,17 @@ public class Main2Activity extends AppCompatActivity {
 
     public EditText editText;
     public EditText editText1;
+    private Intent intent;
+    private String a;
+    private String b;
+    private long c;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+
+        intent = getIntent();
 
         dbHelper = new DbHelper(this);
         db = dbHelper.getWritableDatabase();
@@ -28,8 +34,14 @@ public class Main2Activity extends AppCompatActivity {
         editText = findViewById(R.id.editText);
         editText1 = findViewById(R.id.editText2);
 
-    }
+        a = intent.getStringExtra("Title");
+        b = intent.getStringExtra("Body");
+        c = intent.getLongExtra("noteid", 1);
 
+        editText.setText(a);
+        editText1.setText(b);
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -43,11 +55,20 @@ public class Main2Activity extends AppCompatActivity {
         int id = item.getItemId();
 
         if(id == R.id.save){
-            long id1 = dbHelper.insertNote(db, editText.getText().toString(),editText1.getText().toString());
+            if(c == 1) {
+                long id1 = dbHelper.insertNote(db, editText.getText().toString(), editText1.getText().toString());
 
-            Toast.makeText(this, "Note has been saved!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Note has been saved!", Toast.LENGTH_SHORT).show();
 
-            this.finish();
+                this.finish();
+            }
+            else
+            {
+                boolean id2 = dbHelper.updateNote(db, c ,editText.getText().toString(), editText1.getText().toString());
+                Toast.makeText(this, "Note has been updated!", Toast.LENGTH_SHORT).show();
+
+                this.finish();
+            }
         }
 
         return true;
