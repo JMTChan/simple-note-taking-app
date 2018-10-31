@@ -65,12 +65,18 @@ public class Main2Activity extends AppCompatActivity {
             else
             {
                 boolean id2 = dbHelper.updateNote(db, c ,editText.getText().toString(), editText1.getText().toString());
-                Toast.makeText(this, "Note has been updated!", Toast.LENGTH_SHORT).show();
+                if(id2)
+                {
+                    Toast.makeText(this, "Note has been updated!", Toast.LENGTH_SHORT).show();
+                    this.finish();
+                }
+                else
+                {
+                    // do nothing
+                }
 
-                this.finish();
             }
         }
-
         return true;
     }
 }
